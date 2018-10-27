@@ -68,25 +68,6 @@ class Login extends React.Component {
 
   }
 
-  // handleEmail(e) {
-  //   e.preventDefault();
-  //   let email = e.target.value;
-  //
-  //   this.setState({
-  //     email: email
-  //   });
-  // }
-  //
-  // handlePassword(e) {
-  //   e.preventDefault();
-  //   let password = e.target.value;
-  //
-  //   this.setState({
-  //     password: e.target.value
-  //   });
-  //
-  // }
-
   render() {
 
     if (this.props.isRedirect) {
