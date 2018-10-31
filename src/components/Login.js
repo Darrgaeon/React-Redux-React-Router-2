@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import { API_POST } from "../constants/Default";
 import * as PropTypes from "prop-types";
-import { testPassword, testEmail } from '../utils/inputs';
+import { testPassword } from '../utils/inputs';
 
 class Login extends React.Component {
   constructor(props) {
@@ -12,60 +12,55 @@ class Login extends React.Component {
 
     this.state = {
       email: "",
-      password: "",
-      checkClear: false
+      password: ""
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeEmail = this.handleChangeEmail.bind(this);
+    this.handleChangePassword = this.handleChangePassword.bind(this);
     this.validate = this.validate.bind(this);
   }
 
-  handleChange(e) {
+  handleChangeEmail(e) {
     e.preventDefault();
+    let email = this.refs.emailField.value;
 
-    let value = e.currentTarget.value;
-    let fieldName = e.currentTarget.dataset.fieldName;
+    this.setState({
+      email: email
+    })
 
-    // if (this.state.checkClear) {
-    //   console.log("!!!");
-    //
-    //   e.currentTarget.value = "";
-    //   this.setState( ({
-    //     checkClear: false
-    //   }))
-    //
-    // }
+  }
 
-    this.setState(prev => ({
-      ...prev,
-      [fieldName]: value,
-    }));
+  handleChangePassword(e) {
+    e.preventDefault();
+    let password = this.refs.passwordField.value;
+
+    this.setState({
+      password: password
+    })
 
   }
 
   handleSubmit(e) {
     e.preventDefault();
 
-    // this.setState(({
-    //   checkClear: true
-    // }));
-
-    this.props.getUserLogin(API_POST, this.state.email, this.state.password);
-
     if (this.state.password !== "12345" || this.state.email !== "max@test.com") {
       alert("Имя пользователя или пароль введены не верно");
     }
 
+    this.props.getUserLogin(API_POST, this.state.email, this.state.password);
+
+    this.setState({
+      email: "",
+      password: ""
+    });
+    this.refs.passwordField.value = ""
+
   }
 
   validate() {
-    const { email, password } = this.state;
-    if (!testPassword(password)) {
-      return false
-    }
-    return testEmail(email);
-
+    const { password } = this.state;
+    return testPassword(password);
   }
 
   render() {
@@ -78,8 +73,8 @@ class Login extends React.Component {
         <div className="login">
           <h1>Login</h1>
           <form onSubmit={this.handleSubmit}>
-            <input data-field-name="email" type="email" name="email" id="email" placeholder="Введите email" onChange={this.handleChange}/>
-            <input data-field-name="password" type="password" name="password" id="password" placeholder="Введите пароль" onChange={this.handleChange}/>
+            <input ref="emailField"  type="email" name="email" id="email" placeholder="Введите email" onChange={this.handleChangeEmail}/>
+            <input ref="passwordField"  type="password" name="password" id="password" placeholder="Введите пароль" onChange={this.handleChangePassword}/>
             <Button color="btn btn-primary btn-block btn-large" disabled={!this.validate()} type="submit" >Войти</Button>
           </form>
         </div>
